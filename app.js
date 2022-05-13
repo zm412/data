@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 const path = require("path");
 const PORT = process.env.PORT || 5000;
 
-equire("dotenv").config();
+require("dotenv").config();
 
 mongoose.connect(
   process.env.MONGODB,
