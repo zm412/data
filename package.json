@@ -2,8 +2,10 @@
   "name": "rpcnode",
   "version": "1.0.0",
   "description": "",
-  "private": true,
   "main": "app.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "build": "node app.js",
     "dev": "concurrently 'npm:temp' 'npm:webp'",
@@ -11,9 +13,6 @@
     "webp": "nodemon app.js --mode development",
     "start": "node app.js"
   },
-  "mode": "production",
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -23,9 +22,7 @@
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.3"
   },
-  "engines": {
-    "node": "16.x"
-  },
+
   "devDependencies": {
     "concurrently": "^7.1.0",
     "css-loader": "^6.7.1",
