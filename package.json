@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack -w",
     "dev": "concurrently 'npm:build' 'npm:start'",
-    "start": "nodemon app.js --mode development"
+    "start": "node app.js --mode production"
   },
   "mode": "development",
   "author": "",
