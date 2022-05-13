@@ -12,9 +12,9 @@ mongoose.connect(
   { useUnifiedTopology: true, useNewUrlParser: true },
   function (err) {
     if (err) return console.log(err);
-    app.listen(3000, function () {
-      console.log("Сервер ожидает подключения...");
-    });
+    app.listen(process.env.PORT || 3000, () =>
+      console.log("Server is running...")
+    );
   }
 );
 
