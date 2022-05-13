@@ -4,11 +4,13 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "webpack -w",
-    "dev": "concurrently 'npm:build' 'npm:start'",
-    "start": "node app.js --mode production"
+    "build": "node app.js",
+    "dev": "concurrently 'npm:temp' 'npm:webp'",
+    "temp": "webpack -w",
+    "webp": "nodemon app.js --mode development",
+    "start": "node app.js"
   },
-  "mode": "development",
+  "mode": "production",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -22,7 +24,9 @@
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.3",
     "pg": "^8.7.3",
-    "style-loader": "^3.3.1"
+    "style-loader": "^3.3.1",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
   },
   "engines": {
     "node": "16.x"
@@ -30,8 +34,6 @@
   "devDependencies": {
     "nodemon": "^2.0.16",
     "sass": "^1.51.0",
-    "sass-loader": "^12.6.0",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
+    "sass-loader": "^12.6.0"
   }
 }
