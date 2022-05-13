@@ -5,6 +5,7 @@ const hbs = require("hbs");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const path = require("path");
 const PORT = process.env.PORT || 5000;
 
@@ -94,41 +95,21 @@ server.addMethod("save_form", (pac) => {
   return "wlkjlkjlj";
 });
 
-const app = express();
-
-var whitelist = ["*", "http:localhost"];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
-app.use(cors({ credentials: true, origin: true }));
-app.use(express.static(path.join(__dirname, "dist")));
-app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
-app.set("view engine", "html");
-app.engine("html", require("hbs").__express);
-
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
-app.post("/json-rpc/", (req, res) => {
-  //  console.log(req, "req");
-  console.log(req.body, "body");
-
-  const jsonRPCRequest = req.body;
-  server.receive(req.body).then((jsonRPCResponse) => {
-    if (jsonRPCResponse) {
-      res.json(jsonRPCResponse);
-    } else {
-      res.sendStatus(204);
-    }
-  });
-});
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+express()
+  .use(express.static(path.join(__dirname, "dist")))
+  .set("views", path.join(__dirname, "dist"))
+  .set("view engine", "html")
+  .use(bodyParser.json())
+  .engine("html", require("hbs").__express)
+  .get("/", (req, res) => res.render("index"))
+  .post("/json-rpc/", (req, res) => {
+    const jsonRPCRequest = req.body;
+    server.receive(req.body).then((jsonRPCResponse) => {
+      if (jsonRPCResponse) {
+        res.json(jsonRPCResponse);
+      } else {
+        res.sendStatus(204);
+      }
+    });
+  })
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
