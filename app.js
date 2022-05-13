@@ -15,7 +15,6 @@ mongoose.connect(
   { useUnifiedTopology: true, useNewUrlParser: true },
   function (err) {
     if (err) return console.log(err);
-    app.listen(PORT, () => console.log(`Listening on ${PORT}`));
   }
 );
 
@@ -132,3 +131,4 @@ app.post("/json-rpc/", (req, res) => {
     }
   });
 });
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
