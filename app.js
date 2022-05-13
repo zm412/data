@@ -108,7 +108,7 @@ var corsOptions = {
 };
 
 app.use(cors({ credentials: true, origin: true }));
-app.use(express.static(__dirname + "/dist"));
+app.use(express.static("dist"));
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "html");
