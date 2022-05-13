@@ -5,16 +5,17 @@ const hbs = require("hbs");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-require("dotenv").config();
+const path = require("path");
+const PORT = process.env.PORT || 5000;
+
+equire("dotenv").config();
 
 mongoose.connect(
   process.env.MONGODB,
   { useUnifiedTopology: true, useNewUrlParser: true },
   function (err) {
     if (err) return console.log(err);
-    app.listen(process.env.PORT || 3000, () =>
-      console.log("Server is running...")
-    );
+    app.listen(PORT, () => console.log(`Listening on ${PORT}`));
   }
 );
 
@@ -108,7 +109,7 @@ var corsOptions = {
 };
 
 app.use(cors({ credentials: true, origin: true }));
-app.use(express.static("dist"));
+app.use(express.static(path.join(__dirname, "dist")));
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "html");
