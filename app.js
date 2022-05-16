@@ -1,13 +1,18 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { JSONRPCServer } = require("json-rpc-2.0");
 const hbs = require("hbs");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
+const { JSONRPCServer } = require("json-rpc-2.0");
+const bodyParser = require("body-parser");
 const path = require("path");
-const PORT = process.env.PORT || 5000;
+const express = require("express");
+const mongoose = require("mongoose");
+const { Question, Option, Form } = require("./schema");
+const app = express();
+const http = require("http").createServer(app);
+const cors = require("cors");
+const server = require("./jsonrpc.js");
+var corsOptions = {
+  origin: "http://127.0.0.1:5000",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 require("dotenv").config();
 
@@ -21,95 +26,84 @@ mongoose.connect(
 
 mongoose.Promise = global.Promise;
 
-const QuestionScheme = new Schema({
-  question: String,
-  form: { type: Schema.ObjectId, ref: "Form" },
-  question_type: {
-    type: String,
-    enum: ["input", "textarea", "select"],
-    required: true,
-  },
-  description: String,
-});
-
-const OptionScheme = new Schema({
-  option: String,
-  question: {
-    type: Schema.ObjectId,
-    ref: "Question",
-    required: true,
-  },
-});
-
-const FormScheme = new Schema({
-  created: Date,
-  title: String,
-});
-
-const FormInstScheme = new Schema({
-  form: { type: Schema.ObjectId, ref: "Form", required: true },
-  created: Date,
-});
-
-let Question = mongoose.model("Question", QuestionScheme);
-let Option = mongoose.model("Option", OptionScheme);
-let Form = mongoose.model("Form", FormScheme);
-
 var db = mongoose.connection;
+app.use(cors(corsOptions));
+app.use(express.static(path.join(__dirname, "dist")));
+app.use(bodyParser.json());
+app.engine("html", require("hbs").__express);
 
-const server = new JSONRPCServer();
+app.set("view engine", "html");
+app.set("views", path.join(__dirname, "dist"));
 
-server.addMethod("echo", ({ text }) => {
-  console.log(text, "temp");
-  return text + 8888;
-});
+const host = "127.0.0.1";
+const port = 8000;
 
-server.addMethod("log", ({ message }) => console.log(message, "message"));
-
-server.addMethod("save_form", (pac) => {
-  let answ = pac.form;
-
-  let form = new Form({ title: answ.title, created: answ.created });
-  form.save((err) => console.log(err, "err"));
-
-  for (let key in answ) {
-    if (key != "title") {
-      let question = new Question({
-        question: key,
-        question_type: answ[key].type,
-        description: answ[key].description,
-        form: form._id,
-      });
-
-      question.save().then((doc) => {
-        if (answ[key].type == "select") {
-          answ[key].opts.map((el) => {
-            let option = new Option({ option: el, question: doc._id });
-            option.save((err) => console.log(err, "err"));
-          });
-        }
-      });
+app.get("/", (req, res) => res.render("index"));
+app.post("/json-rpc/", (req, res) => {
+  const jsonRPCRequest = req.body;
+  server.receive(req.body).then((jsonRPCResponse) => {
+    if (jsonRPCResponse) {
+      res.json(jsonRPCResponse);
+    } else {
+      res.sendStatus(204);
     }
-  }
-
-  return "wlkjlkjlj";
+  });
 });
 
-express()
-  .use(express.static(path.join(__dirname, "dist")))
-  .set("views", path.join(__dirname, "dist"))
-  .set("view engine", "html")
-  .use(bodyParser.json())
-  .engine("html", require("hbs").__express)
-  .get("/", (req, res) => res.render("index"))
-  .post("/json-rpc/", (req, res) => {
-    const jsonRPCRequest = req.body;
-    server.receive(req.body).then((jsonRPCResponse) => {
-      if (jsonRPCResponse) {
-        res.json(jsonRPCResponse);
-      } else {
-        res.sendStatus(204);
-      }
+http.listen(port, host, () =>
+  console.log(`Server listens http://${host}:${port}`)
+);
+
+/*
+let clients = [];
+
+io.on("connection", (socket) => {
+  console.log(`Client with id ${socket.id} connected`);
+  clients.push(socket.id);
+
+  socket.emit("message", "I'm server");
+
+  socket.on("message", (message) => {
+    if (message == "get_form") {
+      socket.emit("message", "This is form");
+    }
+  });
+
+  socket.on("message", (message) => console.log("Message: ", message));
+
+  socket.on("get_forms", (message) => {
+    let result = {};
+    Form.find({}, "title created", (err, form_inst) => {
+      socket.emit("get_forms", form_inst);
+      console.log(err, "err");
     });
-  })
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  });
+
+  socket.on("disconnect", () => {
+    clients.splice(clients.indexOf(socket.id), 1);
+    console.log(`Client with id ${socket.id} disconnected`);
+  });
+});
+
+//получение количества активных клиентов
+app.get("/clients-count", (req, res) => {
+  res.json({
+    hlhlhlh: "ljljlj",
+  });
+});
+
+//отправка сообщения конкретному клиенту по его id
+app.post("/client/:id", (req, res) => {
+  if (clients.indexOf(req.params.id) !== -1) {
+    io.sockets.connected[req.params.id].emit(
+      "private message",
+      `Message to client with id ${req.params.id}`
+    );
+    return res.status(200).json({
+      message: `Message was sent to client with id ${req.params.id}`,
+    });
+  } else return res.status(404).json({ message: "Client not found" });
+});
+
+
+*/
