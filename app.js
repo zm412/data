@@ -17,6 +17,11 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 */
+app.use((req, res, next) => {
+  res.append("Access-Control-Allow-Origin", "*"); // разрешает принимать запросы со всех доменов
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"); // какие методы в запросах разрешается принимать
+  next();
+});
 
 require("dotenv").config();
 
