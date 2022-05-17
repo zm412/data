@@ -10,7 +10,7 @@ const http = require("http").createServer(app);
 const cors = require("cors");
 const server = require("./jsonrpc.js");
 var corsOptions = {
-  origin: "http://127.0.0.1:5000",
+  origin: "https://sitezm412.herokuapp.com/",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
