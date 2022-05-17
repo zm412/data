@@ -15,6 +15,7 @@ var corsOptions = {
 };
 
 require("dotenv").config();
+const PORT = process.env.PORT || 5000;
 
 mongoose.connect(
   process.env.MONGODB,
@@ -35,9 +36,6 @@ app.engine("html", require("hbs").__express);
 app.set("view engine", "html");
 app.set("views", path.join(__dirname, "dist"));
 
-const host = "127.0.0.1";
-const port = 8000;
-
 app.get("/", (req, res) => res.render("index"));
 app.post("/json-rpc/", (req, res) => {
   const jsonRPCRequest = req.body;
@@ -50,9 +48,7 @@ app.post("/json-rpc/", (req, res) => {
   });
 });
 
-http.listen(port, host, () =>
-  console.log(`Server listens http://${host}:${port}`)
-);
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 /*
 let clients = [];
@@ -107,3 +103,4 @@ app.post("/client/:id", (req, res) => {
 
 
 */
+//http.listen(process.env.PORT || 5000);
