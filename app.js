@@ -15,7 +15,8 @@ var corsOptions = {
 };
 
 require("dotenv").config();
-const PORT = process.env.PORT || 5000;
+const host = "0.0.0.0";
+const port = process.env.PORT || 5000;
 
 mongoose.connect(
   process.env.MONGODB,
@@ -48,7 +49,9 @@ app.post("/json-rpc/", (req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+app.listen(port, host, function () {
+  console.log("Server started.......");
+});
 
 /*
 let clients = [];
