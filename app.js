@@ -9,15 +9,9 @@ const app = express();
 const http = require("http").createServer(app);
 const cors = require("cors");
 const server = require("./jsonrpc.js");
-var whitelist = ["https://sitezm412.herokuapp.com/", "http://localhost:5000"];
 var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: ["https://sitezm412.herokuapp.com/", "http://localhost:5000"],
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 require("dotenv").config();
