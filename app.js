@@ -7,13 +7,16 @@ const mongoose = require("mongoose");
 const { Question, Option, Form } = require("./schema");
 const app = express();
 const http = require("http").createServer(app);
-const cors = require("cors");
 const server = require("./jsonrpc.js");
 
+/*
+const cors = require("cors");
 var corsOptions = {
   origin: "https://sitezm412.herokuapp.com/",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
+app.use(cors(corsOptions));
+*/
 
 require("dotenv").config();
 
@@ -28,7 +31,6 @@ mongoose.connect(
 mongoose.Promise = global.Promise;
 
 var db = mongoose.connection;
-app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "dist")));
 app.use(bodyParser.json());
 app.engine("html", require("hbs").__express);
