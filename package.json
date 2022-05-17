@@ -11,7 +11,7 @@
     "dev": "concurrently 'npm:temp' 'npm:webp'",
     "temp": "webpack -w",
     "webp": "nodemon app.js --mode development",
-    "start": "node app.js"
+    "start": "node app.js --mode production"
   },
   "dependencies": {
     "cors": "^2.8.5",
