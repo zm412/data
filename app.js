@@ -37,7 +37,7 @@ app.set("view engine", "html");
 app.set("views", path.join(__dirname, "dist"));
 
 app.get("/", (req, res) => res.render("index"));
-app.post("/json-rpc/", (req, res) => {
+app.post("/json-rpc", (req, res) => {
   const jsonRPCRequest = req.body;
   server.receive(req.body).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
