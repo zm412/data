@@ -36,25 +36,26 @@ app.set("view engine", "html");
 app.set("views", path.join(__dirname, "dist"));
 
 app.get("/", (req, res) => res.render("index"));
-/*
+
 app.options("*", (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Headers", "Content-Type");
   res.send("ok");
 });
-*/
 
 app.post("/json-rpc", cors(corsOptions), (req, res) => {
   const jsonRPCRequest = req.body;
   server.receive(req.body).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
+      res.set("Access-Control-Allow-Origin", "*");
+      res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      res.set("Access-Control-Allow-Headers", "Content-Type");
       res.json(jsonRPCResponse);
     } else {
       res.sendStatus(204);
     }
   });
 });
-
 app.listen(process.env.PORT || 3000, () =>
   console.log("Server is running, localhost:3000")
 );
