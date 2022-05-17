@@ -10,7 +10,7 @@ const http = require("http").createServer(app);
 const cors = require("cors");
 const server = require("./jsonrpc.js");
 var corsOptions = {
-  origin: "https://sitezm412.herokuapp.com/",
+  origin: ["https://sitezm412.herokuapp.com/", "http://127.0.0.1:5000"],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -23,6 +23,9 @@ mongoose.connect(
     if (err) return console.log(err);
   }
 );
+
+const host = "127.0.0.1";
+const port = 8000;
 
 mongoose.Promise = global.Promise;
 
@@ -46,4 +49,6 @@ app.post("/json-rpc/", (req, res) => {
     }
   });
 });
-app.listen(process.env.PORT || 3000, () => console.log("Server is running..."));
+app.listen(port, host, () =>
+  console.log(`Server listens http://${host}:${port}`)
+);

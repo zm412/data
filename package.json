@@ -7,7 +7,7 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "node app.js --mode production"
+    "start": "node app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
