@@ -9,15 +9,18 @@ let url = "/json-rpc/";
 let client = new ClientForms(url);
 
 let obj = {};
+
 document.addEventListener("DOMContentLoaded", function () {
-  client.getForms(createFormsList);
-  document.querySelector("#add_form").onclick = () => {
-    document.querySelector("#new_form").classList.toggle("hidden_bl");
-  };
-  document.querySelector("#new_quest").onclick = () => {
-    newQuest();
-  };
-  document.querySelector("#save_f").onclick = getInfo;
+  if (document.querySelector("#main_form")) {
+    client.getForms(createFormsList);
+    document.querySelector("#add_form").onclick = () => {
+      document.querySelector("#new_form").classList.toggle("hidden_bl");
+    };
+    document.querySelector("#new_quest").onclick = () => {
+      newQuest();
+    };
+    document.querySelector("#save_f").onclick = getInfo;
+  }
 });
 
 function addHTMLForm() {
@@ -46,6 +49,7 @@ function createFormsList(arr) {
 }
 
 function newQuest() {
+  document.querySelector("#new_quest").classList.add("hidden_bl");
   let par = document.querySelector("#create_quest");
   par.innerHTML = null;
   par.insertAdjacentHTML(
@@ -98,6 +102,7 @@ function getType(e) {
       let newQuest = createEl(newElem, "input");
       let newQuestDesc = createEl(newElem, "input");
       newQuestDesc.placeholder = "Description";
+      let br = createEl(newElem, "br");
       newQuest.dataset.type = el;
       newQuest.placeholder = "Question";
       newQuest.required = true;
@@ -129,6 +134,7 @@ function getType(e) {
         document.querySelector("#add_form").classList.add("hidden_bl");
         document.querySelector("#create_quest").innerHTML = null;
         document.querySelector("#new_question").innerHTML = null;
+        document.querySelector("#new_quest").classList.remove("hidden_bl");
         createList(obj);
       };
     }

@@ -8,10 +8,26 @@ document.addEventListener("DOMContentLoaded", function () {
   if (document.querySelector("#list_insts")) {
     let id = localStorage.getItem("show_finst");
     client.getFormsInstances(id, listOfInstances);
-    let strhtml = ` <h1>Date: ${obj.created}</h1> `;
+    client.getForm(id, create_form);
   }
 });
 
+function show_descript_form() {
+  let par = document.querySelector("#descript_form");
+}
+
+function create_form(obj) {
+  let par = document.querySelector("#descript_form");
+  let str = `<h3>${obj[0].form.title}</h3>`;
+  let htmlform = obj.map((el) => {
+    str += `<p>${el.question} (${el.description}), type: ${el.question_type} </p>`;
+    if (el.question_type == "select") {
+      str += `<em>   Options: ${el.opts.join(", ")}</em>`;
+    }
+    console.log(str, "str");
+  });
+  par.innerHTML = str;
+}
 function listOfInstances(obj) {
   console.log(obj, obj);
   let par = document.querySelector("#list_insts");
@@ -30,9 +46,7 @@ function createEl(par, tag, inner = null) {
 function showFormInst(par, obj) {
   let newdate = new Date(obj.created);
   let newStr =
-    newdate.toLocaleDateString() +
-    ", " +
-    newdate.toLocaleTimeString().slice(0, -3);
+    newdate.toLocaleDateString() + ", " + newdate.toLocaleTimeString();
 
   let strhtml = ` <h3>Date: ${newStr}</h3> `;
   let newPart = obj.answers

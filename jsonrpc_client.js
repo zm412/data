@@ -15,7 +15,6 @@ export class ClientForms {
         body: JSON.stringify(jsonRPCRequest),
       })
         .then((response) => {
-          console.log(response, "response");
           if (response.status === 200) {
             return response
               .json()
@@ -30,21 +29,16 @@ export class ClientForms {
   }
 
   saveForm(obj) {
-    console.log(obj, "obj");
     return this.getClient()
       .request("save_form", obj)
-      .then((result) => {
-        console.log(result, "res1");
-      });
+      .then((result) => {});
   }
 
   getFormsInstances(form_id, func) {
-    console.log(form_id, "formid");
     return this.getClient()
       .request("get_instances_by_formid", form_id)
       .then((result) => {
         func(result);
-        console.log(result, "res2");
       });
   }
 
@@ -52,7 +46,6 @@ export class ClientForms {
     return this.getClient()
       .request("get_form", id)
       .then((result) => {
-        console.log(result, "result");
         func(result);
       });
   }
@@ -62,7 +55,6 @@ export class ClientForms {
       .request("get_forms")
       .then((result) => {
         func(result);
-        console.log(result, "result");
       });
   }
 
@@ -71,7 +63,6 @@ export class ClientForms {
       .request("save_form_inst", obj)
       .then((result) => {
         func(result);
-        console.log(result, "resultRES");
       });
   }
 
@@ -80,7 +71,6 @@ export class ClientForms {
       .request("get_form_inst", id)
       .then((result) => {
         //func(result);
-        console.log(result, "resultKKK");
       });
   }
 }
