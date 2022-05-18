@@ -5,8 +5,7 @@ const server = new JSONRPCServer();
 const form = new FormDb();
 const formInst = new FormInstDb();
 
-server.addMethod("save_form", (pac) => {
-  let obj = pac.form;
+server.addMethod("save_form", (obj) => {
   return form.create(obj);
 });
 
@@ -20,15 +19,21 @@ server.addMethod("get_form", (id) => {
   return one;
 });
 
+server.addMethod("get_instances_by_formid", (form_id) => {
+  let formInstDocs = formInst.getFormInstancesByFormId(form_id);
+  //console.log(formInstDocs, "DJJJJJ");
+  return formInstDocs;
+});
+
 server.addMethod("save_form_inst", (obj) => {
   let formInstDoc = formInst.create(obj);
-  console.log(formInstDoc, "OOOOK");
+  //console.log(formInstDoc, "OOOOK");
   return formInstDoc;
 });
 
 server.addMethod("get_form_inst", (id) => {
   let formInstDoc = formInst.getFormInst(id);
-  console.log(formInstDoc, "idIIII");
+  //console.log(formInstDoc, "idIIII");
   return formInstDoc;
 });
 

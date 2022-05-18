@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const { Question, Option, Form } = require("./schema");
 const app = express();
 const http = require("http").createServer(app);
-const server = require("./jsonrpc.js");
+const server = require("./jsonrpc_server.js");
 const cors = require("cors");
 
 var corsOptions = {
@@ -36,6 +36,7 @@ app.set("view engine", "html");
 app.set("views", path.join(__dirname, "dist"));
 
 app.get("/", (req, res) => res.render("index"));
+app.get("/finst_list/", (req, res) => res.render("forms_instances"));
 
 app.post("/json-rpc", (req, res) => {
   //console.log(req.body, "req");

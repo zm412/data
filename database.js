@@ -79,12 +79,20 @@ class FormInstDb {
       });
   }
 
+  getFormInstancesByFormId(id) {
+    return FormInstance.find({ form: id })
+      .populate("form")
+      .populate({
+        path: "answers",
+        populate: { path: "question" },
+      });
+  }
+
   create(obj) {
     let answer = new AnswerDb();
     let answ_arr = [];
     obj.answers.map((el) => {
       let answ = answer.create(el);
-      //   console.log(answ, "el");
       answ_arr.push(answ._id);
     });
     let formInst = new FormInstance({

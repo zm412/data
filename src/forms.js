@@ -4,8 +4,13 @@ import {
   JSONRPCServer,
 } from "json-rpc-2.0";
 
+const { ClientForms } = require("../jsonrpc_client.js");
+let url = "/json-rpc/";
+let client = new ClientForms(url);
+
 let obj = {};
 document.addEventListener("DOMContentLoaded", function () {
+  client.getForms(createFormsList);
   document.querySelector("#add_form").onclick = () => {
     document.querySelector("#new_form").classList.toggle("hidden_bl");
   };
@@ -28,23 +33,17 @@ function addHTMLForm() {
   `;
 }
 
-const client = new JSONRPCClient((jsonRPCRequest) => {
-  fetch("/json-rpc/", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(jsonRPCRequest),
-  }).then((response) => {
-    if (response.status === 200) {
-      return response.json().then((jsonRPCResponse) => {
-        client.receive(jsonRPCResponse);
-      });
-    } else if (jsonRPCRequest.id !== undefined) {
-      return Promise.reject(new Error(response.statusText));
-    }
+function createFormsList(arr) {
+  let list = document.querySelector("#list_f");
+  let ul = createEl(list, "ul");
+  arr.map((el) => {
+    let li = createEl(ul, "li");
+    let a = createEl(li, "a", el.title);
+    a.href = "/finst_list/";
+    a.onclick = (e) => localStorage.setItem("show_finst", el._id);
   });
-});
+  return list;
+}
 
 function newQuest() {
   let par = document.querySelector("#create_quest");
@@ -84,10 +83,8 @@ function createList(obj) {
 }
 
 function getInfo() {
-  client.request("save_form", { form: obj }).then((result) => {
-    console.log(result, "res1");
-    addHTMLForm();
-  });
+  client.saveForm(obj);
+  addHTMLForm();
 }
 
 function getType(e) {
