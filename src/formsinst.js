@@ -22,9 +22,8 @@ function create_form(obj) {
   let htmlform = obj.map((el) => {
     str += `<p>${el.question} (${el.description}), type: ${el.question_type} </p>`;
     if (el.question_type == "select") {
-      str += `<em>   Options: ${el.opts.join(", ")}</em>`;
+      str += `<em>Options: ${el.opts.join(", ")}</em>`;
     }
-    console.log(str, "str");
   });
   par.innerHTML = str;
 }

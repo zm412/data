@@ -62,6 +62,7 @@ export class ClientForms {
     return this.getClient()
       .request("save_form_inst", obj)
       .then((result) => {
+        console.log(result, "result");
         func(result);
       });
   }
