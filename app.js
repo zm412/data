@@ -38,6 +38,7 @@ app.set("views", path.join(__dirname, "dist"));
 app.get("/", (req, res) => res.render("index"));
 
 app.post("/json-rpc", (req, res) => {
+  console.log(req.body, "req");
   const jsonRPCRequest = req.body;
   server.receive(req.body).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
