@@ -42,9 +42,9 @@ app.post("/json-rpc", (req, res) => {
   const jsonRPCRequest = req.body;
   server.receive(req.body).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
-      res.set("Access-Control-Allow-Origin", "*");
-      res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-      res.set("Access-Control-Allow-Headers", "Content-Type");
+      //res.set("Access-Control-Allow-Origin", "*");
+      //res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+      //res.set("Access-Control-Allow-Headers", "Content-Type");
       res.json(jsonRPCResponse);
     } else {
       res.sendStatus(204);
