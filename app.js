@@ -11,7 +11,7 @@ const server = require("./jsonrpc.js");
 const cors = require("cors");
 
 var corsOptions = {
-  origin: ["https://sitezm412.herokuapp.com/", "http://localhost:5000"],
+  origin: ["https://sitezm412.herokuapp.com", "http://localhost:5000"],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 app.use(cors(corsOptions));
