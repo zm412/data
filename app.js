@@ -37,20 +37,7 @@ app.set("views", path.join(__dirname, "dist"));
 
 app.get("/", (req, res) => res.render("index"));
 
-app.options("/json-rpc", function (req, res) {
-  console.log(req, "req");
-  res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.set("Access-Control-Allow-Headers", "Content-Type");
-});
-
-app.options("*", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Headers", "Content-Type");
-  res.send("ok");
-});
-
-app.post("/json-rpc", cors(corsOptions), (req, res) => {
+app.post("/json-rpc", (req, res) => {
   const jsonRPCRequest = req.body;
   server.receive(req.body).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
