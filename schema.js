@@ -20,19 +20,20 @@ const FormScheme = new Schema({
 });
 
 const AnswerScheme = new Schema({
-  form_instance: { type: Schema.ObjectId, ref: "FormInstScheme" },
+  //form_instance: { type: Schema.ObjectId, ref: "FormInstance" },
   question: { type: Schema.ObjectId, ref: "Question" },
   answer: String,
 });
 
 const FormInstScheme = new Schema({
   form: { type: Schema.ObjectId, ref: "Form", required: true },
+  answers: [{ type: Schema.ObjectId, ref: "Answer" }],
   created: Date,
 });
 
 let Question = mongoose.model("Question", QuestionScheme);
 let Form = mongoose.model("Form", FormScheme);
 let Answer = mongoose.model("Answer", AnswerScheme);
-let FormInstance = mongoose.model("FormInst", FormInstScheme);
+let FormInstance = mongoose.model("FormInstance", FormInstScheme);
 
 module.exports = { Question, Form, Answer, FormInstance };

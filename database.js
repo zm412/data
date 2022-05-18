@@ -1,4 +1,5 @@
 const { Question, Form, Answer, FormInstance } = require("./schema");
+
 class QuestionDb {
   create(obj, form_id) {
     let question = new Question({
@@ -48,36 +49,52 @@ class FormDb {
 class AnswerDb {
   create(obj, form_inst_id) {
     let answer = new Answer({
-      form_instance: form_inst_id,
+      //form_instance: form_inst_id,
       question: obj.question,
       answer: obj.answer,
     });
     answer.save();
     return answer;
   }
+
+  getAnswersByFormInstId(form_inst_id) {
+    let answers = Answer.find({ form_instance: form_inst_id })
+      //.populate("form_instance")
+      .populate("question");
+    //.lean()
+    //.then((doc) => doc);
+    //console.log(answers, "temp");
+
+    return answers;
+  }
 }
 
 class FormInstDb {
+  getFormInst(id) {
+    return FormInstance.findById(id)
+      .populate("form")
+      .populate({
+        path: "answers",
+        populate: { path: "question" },
+      });
+  }
+
   create(obj) {
     let answer = new AnswerDb();
+    let answ_arr = [];
+    obj.answers.map((el) => {
+      let answ = answer.create(el);
+      //   console.log(answ, "el");
+      answ_arr.push(answ._id);
+    });
     let formInst = new FormInstance({
       form: obj.form,
       created: obj.date,
+      answers: answ_arr,
     });
-    formInst.save().then((doc) => {
-      console.log(doc, "doc");
-      obj.answers.map((el) => {
-        console.log(el, "el");
-        answer.create(el, doc._id);
-      });
-    });
-    return formInst;
-  }
-
-  getFormInst(id) {
-    let forminst = FormInstance.find({ _id: id });
-    console.log(forminst, "forminst");
-    return forminst;
+    formInst.save();
+    let result = this.getFormInst(formInst._id);
+    return result;
   }
 }
 

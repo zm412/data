@@ -1,6 +1,5 @@
 const { JSONRPCServer } = require("json-rpc-2.0");
 const { FormDb, FormInstDb } = require("./database.js");
-const { Question, Option, Form, FormInstance } = require("./schema");
 
 const server = new JSONRPCServer();
 const form = new FormDb();
@@ -23,11 +22,13 @@ server.addMethod("get_form", (id) => {
 
 server.addMethod("save_form_inst", (obj) => {
   let formInstDoc = formInst.create(obj);
+  console.log(formInstDoc, "OOOOK");
   return formInstDoc;
 });
 
 server.addMethod("get_form_inst", (id) => {
   let formInstDoc = formInst.getFormInst(id);
+  console.log(formInstDoc, "idIIII");
   return formInstDoc;
 });
 

@@ -6,29 +6,28 @@ import {
 
 let obj = {};
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector("#add_form").onclick = () =>
+  document.querySelector("#add_form").onclick = () => {
     document.querySelector("#new_form").classList.toggle("hidden_bl");
+  };
   document.querySelector("#new_quest").onclick = () => {
     newQuest();
   };
   document.querySelector("#save_f").onclick = getInfo;
 });
 
-/*
+function addHTMLForm() {
+  let par = document.querySelector("#new_form");
+  par.innerHTML = `
+    <input type="text" id='forms_tl' required placeholder="Form title"><br>
+    <div id="quests_list"></div>
+    <button id="new_quest">New question</button>
+    <div id="create_quest" ></div>
 
-let webSocket = new WebSocket("ws://localhost:8080");
+    <div id="new_question"></div>
+    <button id='save_f'>Save form</button>
+  `;
+}
 
-webSocket.onmessage = (event) => {
-  serverAndClient.receiveAndSend(JSON.parse(event.data.toString()));
-};
-
-webSocket.onclose = (event) => {
-  serverAndClient.rejectAllPendingRequests(
-    `Connection is closed (${event.reason}).`
-  );
-};
-
-*/
 const client = new JSONRPCClient((jsonRPCRequest) => {
   fetch("/json-rpc/", {
     method: "POST",
@@ -85,9 +84,10 @@ function createList(obj) {
 }
 
 function getInfo() {
-  client
-    .request("save_form", { form: obj })
-    .then((result) => console.log(result, "res1"));
+  client.request("save_form", { form: obj }).then((result) => {
+    console.log(result, "res1");
+    addHTMLForm();
+  });
 }
 
 function getType(e) {
