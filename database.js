@@ -100,16 +100,13 @@ class FormInstDb {
       created: obj.date,
       answers: answ_arr,
     });
-    formInst
-      .save()
-      .then((doc) => doc)
-      .catch((err) => console.log(err, "err"));
-    return FormInstance.findById(formInst._id)
-      .populate("form")
-      .populate({
-        path: "answers",
-        populate: { path: "question" },
-      });
+
+    formInst.save();
+    //let result = this.getFormInst(formInst._id);
+    //console.log(result, "res");
+    let id = formInst._id;
+
+    return this.getFormInst(id);
   }
 }
 

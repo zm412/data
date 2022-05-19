@@ -24,24 +24,17 @@ button {
   border-radius: 8px;
 }
 
+textarea {
+  border-radius: 5px;
+  height: 30px;
+  width: 180px;
+  margin: 10px 0px;
+}
 input {
   border-radius: 5px;
   height: 30px;
   width: 180px;
   margin: 10px 0px;
-  border-color: SteelBlue;
-}
-
-select {
-  background-color: white;
-  background-position: right 10px center;
-  background-repeat: no-repeat;
-  background-size: auto 50%;
-  border-radius: 5px;
-  color: black;
-  padding: 10px 30px 10px 10px;
-  outline: none;
-  appearance: none;
 }
 
 .container {
